@@ -2,194 +2,239 @@ const app={
     n:7,
     nbCards:57,
     nbSymbols:57,
+    INF:null,
+    arrayCard:null,
+    symbols:[],
+    sameImg:null,
+    modelCard:null,
+    currentCard:null,
+    idInterval:null,
     domElms:{
-        cards:document.querySelectorAll(".card"),
+        cardsContainer:document.querySelector(".cards"),
+        rules:document.querySelector(".rules"),
+        cards:null,
+        model:document.querySelector(".model"),
+        current:document.querySelector(".current"),
+        images:null,
+        nbrCards:document.querySelector(".nbrCards"),
+        minutes:document.querySelector(".minutes"),
+        seconds:document.querySelector(".seconds"),
+        errors:document.querySelector(".errors"),
+        startBtn:document.querySelector(".startBtn"),
+        presentation:document.querySelector(".presentation"),
+        game:document.querySelector(".game"),
+        info:document.querySelector(".info"),
+        endText:document.querySelector(".endText"),
         
     },
+    init(){
+        this.INF=this.n
+        this.arrayCard=[[this.INF,0],[this.INF,this.INF],[this.INF,2*this.INF],[this.INF,3*this.INF],[this.INF,4*this.INF],[this.INF,5*this.INF],[this.INF,6*this.INF],[0,this.INF]]
+        console.log(this.domElms.cardsContainer)
+        this.domElms.minutes.textContent="00";
+        this.domElms.seconds.textContent="00";
+        this.domElms.nbrCards.textContent=this.nbCards-1;
+        this.generateNCards();
+        this.setCoordinateToCards();
+        this.fillSymbolsArray();
+        this.fillCards();
+        this.domElms.images=document.querySelectorAll('.animal');
+        this.formateCards();
+        this.addEvents();
+        this.startGame();
+     
+    },
+    generateNCards(){
+        this.domElms.current.innerHTML="";
+        this.domElms.model.innerHTML="";
+        this.domElms.cardsContainer.innerHTML="";
+        for (let i = 0; i < this.nbCards; i++) {
+            const cardElm=document.createElement('div');
+            cardElm.classList.add("card");
+            cardElm.classList.add(`card${i}`);
+            this.domElms.cardsContainer.appendChild(cardElm);
+        }
+        this.domElms.cards=document.querySelectorAll(".card");
 
-    setCoordinateToCards:
+    },
+    setCoordinateToCards(){
+        let x=0;
+        let y=0;
+        let ind=0;
 
-
-}
-
-function f(a,x,b){
-    return (a*x+b)%(n);
-}
-const n= 7
-const INF=n;
-
-
-const cards=document.querySelectorAll(".card");
-let x=0;
-let y=0;
-let ind=0;
-const arrayCard=[[INF,0],[INF,INF],[INF,2*INF],[INF,3*INF],[INF,4*INF],[INF,5*INF],[INF,6*INF],[0,INF]]
-console.log(cards)
-cards.forEach(card=>{
-    if(x==n){
-        card.setAttribute("data-x",arrayCard[ind][0]);
-        card.setAttribute("data-y",arrayCard[ind][1]); 
-        //card.style.transform="rotate(90deg)";
-        ind++;
-    }
-    else{
-
-        card.setAttribute("data-x",x);
-        card.setAttribute("data-y",y);
-        if (x<n)y+=1;
-        if (y===n||x==INF) {
-            if(x<n)
-            {y=0;
-            x+=1}
-    }
+        this.domElms.cards.forEach(card=>{
+            if(x==this.n){
+                console.log(this.arrayCard,ind,x,y,this.n)
+                card.setAttribute("data-x",this.arrayCard[ind][0]);
+                card.setAttribute("data-y",this.arrayCard[ind][1]); 
+                //card.style.transform="rotate(90deg)";
+                ind++;
+            }
+            else{
+                card.setAttribute("data-x",x);
+                card.setAttribute("data-y",y);
+                if (x<this.n)y+=1;
+                if (y===this.n||x==this.INF) {
+                    if(x<this.n)
+                    {
+                        y=0;
+                        x+=1;
+                    }
+                }   
+            }
+        }) 
+    },
+    fillSymbolsArray(){
+        for (let i = 1; i <=this.nbCards; i++) {
+            this.symbols.push("p"+i);
+        }
+    },
+    getY(a,x,b){
+        return (a*x+b)%(this.n);
+    },
+    fillCards(){
+        let symbol=0
+        let i=0
+        for (let a = 0; a < this.n; a++) {
+            for (let b = 0; b < this.n; b++) {
+                for (let x = 0; x < this.n; x++) {
         
-    }
+                    const card= document.querySelector(`[data-x="${x}"][data-y="${this.getY(a,x,b)}"]`);
+                    card.innerHTML+=`<img class='animal' src='animals/${this.symbols[symbol]}.png'>`;
+                    i++;    
+                }
+                const card= document.querySelector(`[data-x="${this.INF}"][data-y="${a*this.INF}"]`);
+                card.innerHTML+=`<img class='animal' src='animals/${this.symbols[symbol]}.png'>`;
+                
+                symbol+=1
+            }
+        }
+        //symbole de type x=b
+        for (let x = 0; x < this.n; x++) {
+            for (let y = 0; y < this.n; y++) {
+                console.log(x,y)
+                const card= document.querySelector(`[data-x="${x}"][data-y="${y}"]`);
+                    
+                card.innerHTML+=`<img class='animal' src='animals/${this.symbols[symbol]}.png'>`;
+            }
+            const card= document.querySelector(`[data-x="${0}"][data-y="${this.INF}"]`);
+            card.innerHTML+=`<img class='animal' src='animals/${this.symbols[symbol]}.png'>`;
+            symbol+=1
     
- 
-})
-symbols=["p1","p2","p3","p4","p5","p6","p7","p8","p9","p10","p11","p12","p13","p14","p15","p16","p17","p18","p19","p20","p21","p22","p23","p24","p25","p26","p27","p28","p29","p30","p31","p32","p33","p34","p35","p36","p37","p38","p39","p40","p41","p42","p43","p44","p45","p46","p47","p48","p49","p50","p51","p52","p53","p54","p55",'p56','p57']
-console.log(symbols.length)
-positions=[1,2,3,4,5,6,7,8]
-console.log(positions.sort((a, b) => 0.5 - Math.random()));
-let symbol=0
-let i=0
-for (let a = 0; a < n; a++) {
-    for (let b = 0; b < n; b++) {
-        for (let x = 0; x < n; x++) {
-            console.log(x,f(a,x,b))
-            const card= document.querySelector(`[data-x="${x}"][data-y="${f(a,x,b)}"]`);
-            
-            
-            card.innerHTML+=`<img class='animal' src='animals/${symbols[symbol]}.png'>`;
-            i++;
-          
+        }
+
+        //droite à l'infini
+        for (let i = 0; i < this.n; i++) {
+            const card= document.querySelector(`[data-x="${this.INF}"][data-y="${i*this.INF}"]`);
+            card.innerHTML+=`<img class='animal' src='animals/${this.symbols[symbol]}.png'>`;
+
             
         }
-        console.log(INF,a*INF)
-        const card= document.querySelector(`[data-x="${INF}"][data-y="${a*INF}"]`);
+        const card= document.querySelector(`[data-x="${0}"][data-y="${this.INF}"]`);
+        card.innerHTML+=`<img class='animal' src='animals/${this.symbols[symbol]}.png'>`;
+    },
+    getRandom(min, max) {
+        return Math.random() * (max - min) + min;
+    },
+    formateCards(){
+        this.domElms.cards.forEach(card => {
+            let animals= []
+            const imgs=card.querySelectorAll('.animal');
+            imgs.forEach(img => {
+                animals.push(card.removeChild(img));
+            });
+            animals=animals.sort((a, b) => 0.5 - Math.random())
             
-            card.innerHTML+=`<img class='animal' src='animals/${symbols[symbol]}.png'>`;
-        
-        symbol+=1
-    }
-}
-//symbole de type x=b
-for (let x = 0; x < n; x++) {
-    for (let y = 0; y < n; y++) {
-        console.log(x,y)
-        const card= document.querySelector(`[data-x="${x}"][data-y="${y}"]`);
-            
-            card.innerHTML+=`<img class='animal' src='animals/${symbols[symbol]}.png'>`;
-    }
-    console.log(0,INF)
-    const card= document.querySelector(`[data-x="${0}"][data-y="${INF}"]`);
-    card.innerHTML+=`<img class='animal' src='animals/${symbols[symbol]}.png'>`;
-    console.log("symbole ++++++++++++++++++++++",symbol);
-    symbol+=1
+            animals.forEach(animal=> {
+                card.appendChild(animal);
+                animal.style.transform=`rotate(${this.getRandom(0,360)}deg)`;
+                animal.style.width=`${this.getRandom(15,20)}%`;
+            })
+        });
+    },
+    startGame(){
+        this.modelCard = this.domElms.cards[Math.floor(Math.random()*this.domElms.cards.length)];
+        this.currentCard=this.domElms.cards[Math.floor(Math.random()*this.domElms.cards.length)];
 
+
+        while(this.currentCard==this.modelCard){
+            this.currentCard=this.domElms.cards[Math.floor(Math.random()*this.domElms.cards.length)];
+        }
+        this.modelCard.style.display="block";
+        this.currentCard.style.display="block";
+        this.domElms.model.appendChild(this.modelCard);
+        this.domElms.current.appendChild(this.currentCard);
+        this.sameImg=this.getSameImg(this.modelCard,this.currentCard);
     
-}
-
-//droite à l'infini
-for (let i = 0; i < n; i++) {
-    const card= document.querySelector(`[data-x="${INF}"][data-y="${i*INF}"]`);
-    card.innerHTML+=`<img class='animal' src='animals/${symbols[symbol]}.png'>`;
-    console.log(INF,i*INF)
-    
-}
-const card= document.querySelector(`[data-x="${0}"][data-y="${INF}"]`);
-card.innerHTML+=`<img class='animal' src='animals/${symbols[symbol]}.png'>`;
-console.log(0,INF)
-console.log("symbole ++++++++++++++++++++++",symbol);
-
-let allCards=document.querySelectorAll(".card");
-function getRandom(min, max) {
-    return Math.random() * (max - min) + min;
-}
-allCards.forEach(card => {
-    let animals= []
-    const imgs=card.querySelectorAll('.animal');
-    imgs.forEach(img => {
-        animals.push(card.removeChild(img));
-    });
-    animals=animals.sort((a, b) => 0.5 - Math.random())
-    
-    animals.forEach(animal=> {
-        card.appendChild(animal);
-        animal.style.transform=`rotate(${getRandom(0,360)}deg)`;
-        animal.style.width=`${getRandom(10,20)}%`;
-    })
-    console.log(animals)
-
-    
-});
-
-let model = allCards[Math.floor(Math.random()*allCards.length)];
-console.log(model)
-let current=allCards[Math.floor(Math.random()*allCards.length)];
-console.log(current)
-
-while(current==model){
-    current=allCards[Math.floor(Math.random()*allCards.length)];
-}
-
-const divModel=document.querySelector(".model");
-const divCurrent=document.querySelector(".current");
-divModel.appendChild(model);
-divCurrent.appendChild(current);
-model.style.display="block";
-current.style.display="block";
-
-const images= document.querySelectorAll('.animal');
-
-function getSameImg(model,current){
-    modelImgs=model.querySelectorAll(".animal");
-    currentImgs=current.querySelectorAll(".animal");
-    let sameUri=null
-    modelImgs.forEach(modelImg=>{
-        currentImgs.forEach(currentImg=>{
-            console.log(modelImg.getAttribute("src")==currentImg.getAttribute("src"))
-            if(modelImg.getAttribute("src")==currentImg.getAttribute("src"))
-                {sameUri=modelImg.getAttribute("src")}
+    },
+    getSameImg(model,current){
+        modelImgs=model.querySelectorAll(".animal");
+        currentImgs=current.querySelectorAll(".animal");
+        let sameUri=null
+        modelImgs.forEach(modelImg=>{
+            currentImgs.forEach(currentImg=>{
+                console.log(modelImg.getAttribute("src")==currentImg.getAttribute("src"))
+                if(modelImg.getAttribute("src")==currentImg.getAttribute("src"))
+                    {sameUri=modelImg.getAttribute("src")}
+            })
         })
-    })
-    return sameUri;
-}
-let sameUri=getSameImg(model,current);
-console.log(sameUri)
-const nbrCardsElm=document.querySelector(".nbrCards");
-const minutesElm=document.querySelector(".minutes");
-const secondsElm=document.querySelector(".seconds");
-const errorsElm=document.querySelector(".errors");
+        return sameUri;
+    },
+    displayEndOfGame(){
+        this.domElms.game.style.display="none";
+        this.domElms.presentation.style.display="flex";
+        this.domElms.rules.innerHTML="";
+        this.domElms.endText.textContent="Partie terminée. BRAVO !";
+        this.domElms.startBtn.textContent="REJOUER";
+        
 
-time=0
-setInterval(() => {
-    time+=1;
-    minutesElm.textContent= time/60<10? "0" + Math.round(time/60):Math.round(time/60)
-    secondsElm.textContent=time%60<10? "0"+time%60:time%60;
-}, 1000);
-function handleWin(){
-    divModel.removeChild(model);
-    nbrCardsElm.textContent=Number(nbrCardsElm.textContent)-1;
-    divModel.appendChild(current);
-    model=current;
-    allCards=document.querySelectorAll(".card");
-    if(!document.querySelector(".cards").children.length) {
-        console.log("FINI");
-        return;
+    },
+    handleWin(){
+        console.log("test")
+        this.domElms.model.removeChild(this.modelCard);
+        this.domElms.nbrCards.textContent=Number(this.domElms.nbrCards.textContent)-1;
+        this.domElms.model.appendChild(this.currentCard);
+        this.modelCard=this.currentCard;
+        this.domElms.cards=document.querySelectorAll(".card");
+        if(!document.querySelector(".cards").children.length) {
+            console.log("FINI");
+            clearInterval(this.idInterval);
+            this.displayEndOfGame();
+            return;
+        }
+        this.currentCard=this.domElms.cards[Math.floor(Math.random()*this.domElms.cards.length)];
+        while(this.currentCard==this.modelCard){
+            this.currentCard=this.domElms.cards[Math.floor(Math.random()*this.domElms.cards.length)];
+        }
+        this.currentCard.style.display="block";
+        this.sameImg=this.getSameImg(this.modelCard,this.currentCard);
+        this.domElms.current.appendChild(this.currentCard);
+    },
+    startsTimer(){
+        let time=0
+        this.idInterval=setInterval(() => {
+            time+=1;
+            this.domElms.minutes.textContent= time/60<10? "0" + Math.round(time/60):Math.round(time/60)
+            this.domElms.seconds.textContent=time%60<10? "0"+time%60:time%60;
+        }, 1000);
+    },
+    addEvents(){
+        console.log(this.domElms.images)
+        this.domElms.images.forEach(img=> img.addEventListener("click",(e)=>{
+            console.log(e.target)
+            if(app.sameImg==e.target.getAttribute("src")) this.handleWin();
+            else this.domElms.errors.textContent=Number(this.domElms.errors.textContent)+1;
+        }))
+        this.domElms.startBtn.addEventListener("click",(e)=>{
+            if(e.target.textContent=="REJOUER") app.init();
+            this.domElms.presentation.style.display="none";
+            app.domElms.game.style.display="flex";
+            app.domElms.info.style.display="block";
+            clearInterval(this.idInterval);
+            this.startsTimer();
+            
+
+        })
     }
-    current=allCards[Math.floor(Math.random()*allCards.length)];
-    while(current==model){
-        current=allCards[Math.floor(Math.random()*allCards.length)];
-    }
-    current.style.display="block";
-    sameUri=getSameImg(model,current);
-    divCurrent.appendChild(current);
 }
-images.forEach(img=> img.addEventListener("click",(e)=>{
-    
-    modelImgs=model.querySelectorAll(".animal");
-   
-        if(sameUri==e.target.getAttribute("src")) handleWin();
-        else errorsElm.textContent=Number(errorsElm.textContent)+1;
-}))
+app.init()
