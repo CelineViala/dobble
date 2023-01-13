@@ -1,0 +1,93 @@
+body{
+    background-color: rgb(0, 0, 0);
+}
+.card{
+display: none;
+width: 400px;
+height: 400px;
+background-color: rgb(255, 255, 255);
+border-radius: 200px;
+border:1px solid black;
+position: relative;
+box-shadow: 10px 5px 5px rgb(236, 228, 228);
+}
+.info{
+    color:white;
+}
+.title{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    text-align: center;
+    margin-bottom: 1em;
+    color: rgb(224, 216, 216);
+    text-shadow: 2px 2px 2px  rgb(238, 11, 11);
+}
+.game{
+    display: flex;
+    gap:1em;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+img{
+    width:10%;
+    border-radius: 15px;
+}
+img:hover{
+    background-color: rgb(245, 184, 18);
+}
+img:nth-child(1){
+    position:absolute;
+    top: 40%;
+    left:15%;
+    transform: rotate(45deg);
+    width: 10%;
+}
+img:nth-child(2){
+    width: 20%;
+    position:absolute;
+    transform: rotate(65deg);
+    bottom: 10%;
+    left:37%;
+}
+img:nth-child(3){
+    position:absolute;
+    top: 39%;
+    left:42%;
+    transform: rotate(68deg);
+    width: 15%;
+}
+img:nth-child(4){
+    position:absolute;
+    top: 40%;
+    left:70%;
+    transform: rotate(105deg);
+    width: 8%;
+}
+img:nth-child(5){
+    position:absolute;
+    bottom: 15%;
+    right:15%;
+    transform: rotate(4deg);
+    width: 7%;
+}
+img:nth-child(6){
+    position:absolute;
+    top: 13%;
+    transform: rotate(75deg);
+    left:60%;
+    width: 10%;
+}
+img:nth-child(7){
+    position:absolute;
+    bottom: 15%;
+    left:15%;
+    transform: rotate(45deg);
+    width: 9%;
+}
+img:nth-child(8){
+    position:absolute;
+    top: 10%;
+    transform: rotate(49deg);
+    left:35%;
+    width: 12%;
+}
