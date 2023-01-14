@@ -214,8 +214,10 @@ const app={
         let time=0
         this.idInterval=setInterval(() => {
             time+=1;
+            if(Math.round(time/60)=== 60) time=0
             this.domElms.minutes.textContent= time/60<10? "0" + Math.round(time/60):Math.round(time/60)
             this.domElms.seconds.textContent=time%60<10? "0"+time%60:time%60;
+            
         }, 1000);
     },
     addEvents(){

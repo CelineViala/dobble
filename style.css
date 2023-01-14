@@ -51,7 +51,7 @@ box-shadow: 10px 5px 5px rgb(236, 228, 228);
     text-align: center;
     margin-bottom: 1em;
     color: rgb(224, 216, 216);
-    text-shadow: 2px 2px 2px  rgb(238, 11, 11);
+    text-shadow: 2px 2px 2px  rgb(158, 157, 157);
 }
 .game{
     display: none;
@@ -122,4 +122,10 @@ box-shadow: 10px 5px 5px rgb(236, 228, 228);
     transform: rotate(49deg);
     left:35%;
     width: 12%;
+}
+.footer{
+    color: rgba(255, 255, 255, 0.7);
+    position: fixed;
+    font-size: smaller;
+    bottom:0;
 }
